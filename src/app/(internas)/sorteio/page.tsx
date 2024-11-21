@@ -72,7 +72,10 @@ export default function Page() {
           {colabs.length > 0 && (
             <div className="flex flex-col gap-3">
               <button
-                className="flex items-center gap-2 bg-gray-500 px-4 py-2 rounded-md"
+                className={`flex items-center gap-2 bg-gray-500 ${
+                  loading ? "opacity-80 cursor-wait" : ""
+                } px-4 py-2 rounded-md`}
+                disabled={loading}
                 onClick={() => handleSorteio()}
               >
                 <span>Sortear</span>
