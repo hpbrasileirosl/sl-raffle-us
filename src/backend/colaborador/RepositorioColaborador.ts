@@ -20,7 +20,7 @@ export default class RepositorioColaborador {
     try {
       await this.db.colaborador.deleteMany();
       await this.db
-        .$queryRaw`ALTER SEQUENCE "Colaborador_id_seq" RESTART WITH 1;`;
+        .$queryRaw`UPDATE sqlite_sequence SET seq=0 WHERE name="Colaborador"`;
       await this.db.colaborador.createMany({ data: colabs });
     } catch (e) {
       console.error(e);
