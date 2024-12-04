@@ -23,24 +23,20 @@ import ImportForm from '@/app/components/upload/FormularioImport'
 interface ExcelData {
   empresa: string;
   matricula: string;
-  supervisor: string;
   nome: string;
-  data: string;
-  funcao: string;
   setor: string;
-  situacao: string;
+  funcao: string;
+  colaborador: string;
 }
 
 interface ExcelDataIn {
   id: number;
   empresa: string;
   matricula: string;
-  supervisor: string;
   nome: string;
-  data: string;
-  funcao: string;
   setor: string;
-  situacao: string;
+  funcao: string;
+  colaborador: string;
 }
 
 export default function Page() {
@@ -66,37 +62,30 @@ export default function Page() {
     var colabsx: Partial<Colaborador>[] = [];
     const arrayBuffer = await file.arrayBuffer();
     const workbook = XLSX.read(arrayBuffer);
-    const worksheet = workbook.Sheets[workbook.SheetNames[1]];
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet) as ExcelData[];
     setArray([]);
     setColabs([]);
     var icont = 0;
     jsonData.map((item) => {
-      if (item.matricula === "Empresa:") {
-        return null;
-      } else {
-        if (isNumber(item.matricula) == false) {
-          return null;
-        } else {
-          const ditem = { 
-            ...item,
-            id: icont
-          }
-          setArray((array) => [...array, ditem]);
-          let colab: Partial<Colaborador> = {
-            "empresa": item.empresa,
-            "matricula": ''+item.matricula,
-            "supervisor": +item.supervisor || 0,
-            "nome": item.nome,
-            "data": ''+item.data,
-            "funcao": item.funcao,
-            "setor": item.setor,
-            "situacao": item.situacao
-          };
-          colabsx = [...colabsx, colab];
-          icont += 1;
-        }
+      console.log(item)
+      const ditem = { 
+        ...item,
+        id: icont
       }
+      setArray((array) => [...array, ditem]);
+      let colab: Partial<Colaborador> = {
+        "empresa": item.empresa,
+        "matricula": ''+item.matricula,
+        "supervisor": (item.colaborador === "S" ? 1 : (item.colaborador === "C" ? 1 : (item.colaborador === "G" ? 1 : 0))),
+        "nome": item.nome,
+        "data": '',
+        "funcao": item.funcao,
+        "setor": item.setor,
+        "situacao": item.colaborador
+      };
+      colabsx = [...colabsx, colab];
+      icont += 1;
     });
     setData(jsonData);
     if (colabsx.length > 0) {
@@ -120,12 +109,11 @@ export default function Page() {
               <TableHead>ID</TableHead>
               <TableHead>Empresa</TableHead>
               <TableHead>Matricula</TableHead>
-              <TableHead>Supervisor</TableHead>
               <TableHead>Nome</TableHead>
-              <TableHead>Data</TableHead>
-              <TableHead>Funcao</TableHead>
               <TableHead>Setor</TableHead>
-              <TableHead>Situacao</TableHead>
+              <TableHead>Funcao</TableHead>
+              <TableHead>Colaborador</TableHead>
+              <TableHead>Supervisor</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -134,12 +122,11 @@ export default function Page() {
                 <TableCell>{index}</TableCell>
                 <TableCell>{row.empresa}</TableCell>
                 <TableCell>{row.matricula}</TableCell>
-                <TableCell>{row.supervisor}</TableCell>
                 <TableCell>{row.nome}</TableCell>
-                <TableCell>{row.data}</TableCell>
-                <TableCell>{row.funcao}</TableCell>
                 <TableCell>{row.setor}</TableCell>
-                <TableCell>{row.situacao}</TableCell>
+                <TableCell>{row.funcao}</TableCell>
+                <TableCell>{row.colaborador}</TableCell>
+                <TableCell>{(row.colaborador === "S" ? 1 : (row.colaborador === "C" ? 1 : (row.colaborador === "G" ? 1 : 0)))}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -7,6 +7,7 @@ export interface ListaColaboradorProps {
 }
 
 export default function ListaColaborador(props: ListaColaboradorProps) {
+
     return (
         <div className="flex flex-col gap-4">
             {props.colaboradores.map((colaborador: Colaborador) => {
@@ -14,4 +15,5 @@ export default function ListaColaborador(props: ListaColaboradorProps) {
             })}
         </div>
     )
+
 }

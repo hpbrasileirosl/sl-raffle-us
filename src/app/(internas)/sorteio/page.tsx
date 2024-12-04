@@ -34,11 +34,12 @@ export default function Page() {
   };
 
   const empresas = [
-    { value: "", label: "Todas" },
-    { value: "SL", label: "SL" },
-    { value: "SP", label: "SP" },
-    { value: "CP", label: "Jundiai" },
-    { value: "ND", label: "Nordeste" },
+    { value: "",    label: "Todas" },
+    { value: "SLL", label: "Londrina" },
+    { value: "SLM", label: "Mauá" },
+    { value: "SP",  label: "Sementes" },
+    { value: "ND",  label: "Nordeste" },
+    { value: "JD",  label: "Jundiai" },
   ];
 
   useEffect(() => {
