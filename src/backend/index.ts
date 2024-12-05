@@ -7,6 +7,10 @@ import salvarColaborador from './colaborador/salvarColaborador'
 import criarColaborador from './colaborador/criarColaborador'
 import todosColaboradores from './colaborador/todosColaboradores'
 import todosNaoGanhadores from './colaborador/todosNaoGanhadores'
+import todosGanhadores from './colaborador/todosGanhadores'
+import todosPremioExtra from './colaborador/todosPremioExtra'
+import resumoGanhou from './colaborador/resumoGanhou'
+import resumoExtra from './colaborador/resumoExtra'
 import excluirColaborador from './colaborador/excluirColaborador'
 import excluirColaboradores from './colaborador/excluirColaboradores'
 import criarVarios from './colaborador/criarVarios'
@@ -27,5 +31,9 @@ export default class Backend {
         excluir: excluirColaborador,
         excluirTodos: excluirColaboradores,
         naoGanhadores: todosNaoGanhadores,
+        premioExtra: todosPremioExtra,
+        ganhadores: todosGanhadores,
+        resumoGanhou: resumoGanhou,
+        resumoExtra: resumoExtra,
     }
 }

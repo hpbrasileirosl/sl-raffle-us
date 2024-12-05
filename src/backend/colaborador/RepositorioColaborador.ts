@@ -1,4 +1,5 @@
 import { Colaborador } from "@/core/model/Colaborador";
+import { Resumo } from "@/core/model/Resumo";
 import { PrismaClient } from "@prisma/client";
 
 export default class RepositorioColaborador {
@@ -40,6 +41,58 @@ export default class RepositorioColaborador {
         observacao: "",
       },
     });
+  }
+
+  static async todosGanhadores(): Promise<Colaborador[]> {
+    return await this.db.colaborador.findMany({
+      where: {
+        observacao: "GANHOU",
+      },
+    });
+  }
+
+  static async todosPremioExtra(): Promise<Colaborador[]> {
+    return await this.db.colaborador.findMany({
+      where: {
+        premio: "EXTRA",
+      },
+    });
+  }
+
+  static async resumoGanhou(): Promise<Resumo[]> {
+    const retorno = await this.db.colaborador.groupBy({
+      by: ['empresa'],
+      where: {
+        observacao: {
+          contains: 'GANHOU',
+        },
+      },
+      _count: {
+        empresa: true
+      },
+      orderBy: {
+        empresa: 'asc',
+      },
+    })
+    return retorno
+  }
+
+  static async resumoExtra(): Promise<Resumo[]> {
+    const retorno = await this.db.colaborador.groupBy({
+      by: ['empresa'],
+      where: {
+        premio: {
+          contains: 'EXTRA',
+        },
+      },
+      _count: {
+        empresa: true
+      },
+      orderBy: {
+        empresa: 'asc',
+      },
+    })
+    return retorno
   }
 
   static async obterPorId(id: number): Promise<Colaborador> {

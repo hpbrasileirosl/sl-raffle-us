@@ -1,4 +1,4 @@
-import { IconHome, IconUser, IconTool, IconTools } from '@tabler/icons-react'
+import { IconHome, IconUser, IconTool, IconTools, IconReport } from '@tabler/icons-react'
 import MenuItem from './MenuItem'
 
 export default function Menu() {
@@ -9,6 +9,7 @@ export default function Menu() {
                 <MenuItem icone={IconUser} texto="Colaboradores" url="/colaboradores" />
                 <MenuItem icone={IconTool} texto="Sorteio" url="/sorteio" />
                 <MenuItem icone={IconTools} texto="Upload" url="/upload" />
+                <MenuItem icone={IconReport} texto="Resumo" url="/report" />
             </nav>
         </aside>
     )

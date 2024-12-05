@@ -1,4 +1,4 @@
-import { IconHome, IconUser, IconTool, IconTools } from '@tabler/icons-react'
+import { IconHome, IconUser, IconTool, IconTools, IconReport } from '@tabler/icons-react'
 import MenuHeaderItem from './MenuHeaderItem'
 
 export default function MenuHeader() {
@@ -11,6 +11,7 @@ export default function MenuHeader() {
                         <li><MenuHeaderItem icone={IconUser} texto="Colaboradores" url="/colaboradores" /></li>
                         <li><MenuHeaderItem icone={IconTool} texto="Sorteio" url="/sorteio" /></li>
                         <li><MenuHeaderItem icone={IconTools} texto="Upload" url="/upload" /></li>
+                        <li><MenuHeaderItem icone={IconReport} texto="Resumo" url="/resumo" /></li>
                     </ul>
                 </nav>
             </div>

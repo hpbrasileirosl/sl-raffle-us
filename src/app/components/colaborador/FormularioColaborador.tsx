@@ -17,6 +17,9 @@ export default function FormularioColaborador(props: FormularioColaboradorProps)
     const handleClick = () => {
         props.onChange?.({ ...props.colaborador, observacao: '' })
     }
+    const handleClickPremio = () => {
+        props.onChange?.({ ...props.colaborador, premio: '' })
+    }
     return (
         <div className="flex flex-col gap-5">
             <div className="grid grid-cols-2 gap-5">
@@ -86,21 +89,28 @@ export default function FormularioColaborador(props: FormularioColaboradorProps)
                     />
             </div>
             <div className="grid grid-cols-2 gap-5">
-            <InputTexto
-                label="Observação"
-                type="text"
-                value={props.colaborador.observacao}
-                onChange={(e) => props.onChange?.({ ...props.colaborador, observacao: e.target.value })}
-            />
-            <button onClick={handleClick}>
-                <IconTrash />
-            </button>
-            <InputTexto
-                label="Premio"
-                type="text"
-                value={props.colaborador.premio}
-                onChange={(e) => props.onChange?.({ ...props.colaborador, premio: e.target.value })}
-            />
+                <div>
+                    <InputTexto
+                        label="Observação"
+                        type="text"
+                        value={props.colaborador.observacao}
+                        onChange={(e) => props.onChange?.({ ...props.colaborador, observacao: e.target.value })}
+                    />
+                    <button onClick={handleClick}>
+                        <IconTrash />
+                    </button>
+                </div>
+                <div>
+                    <InputTexto
+                        label="Premio"
+                        type="text"
+                        value={props.colaborador.premio}
+                        onChange={(e) => props.onChange?.({ ...props.colaborador, premio: e.target.value })}
+                    />
+                    <button onClick={handleClickPremio}>
+                        <IconTrash />
+                    </button>
+                </div>
             </div>
             <div className="flex justify-between">
                 <div className="flex gap-5">

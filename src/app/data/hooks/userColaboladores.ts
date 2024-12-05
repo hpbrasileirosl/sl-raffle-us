@@ -1,22 +1,28 @@
 import Backend from "@/backend";
+import { Resumo } from "@/core/model/Resumo";
 import { Colaborador } from "@/core/model/Colaborador";
 import { useEffect, useState } from "react";
 
 export default function useColaboradores() {
+
   const [mensagem, setMensagem] = useState<String>("");
   const [icont, setIcont] = useState<number>(0);
   const [ganhador, setGanhador] = useState<string>("");
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
+  const [ganhadores, setGanhadores] = useState<Colaborador[]>([]);
+  const [ganhadoresE, setGanhadoresE] = useState<Colaborador[]>([]);
+  const [resumo, setResumo] = useState<Resumo[]>([]);
+  const [resumoE, setResumoE] = useState<Resumo[]>([]);
   const [colaborador, setColaborador] = useState<Partial<Colaborador> | null>(
     null
   );
-  const [nao_ganhadores, setNaoGanhadores] = useState<Colaborador[]>([]);
   const [selecionados, setSelecionados] = useState<Partial<Colaborador>[]>([]);
   const [colabs, setColabs] = useState<Partial<Colaborador>[]>([]);
 
   useEffect(() => {
     Backend.colaboladores.obter().then(setColaboradores);
-    Backend.colaboladores.naoGanhadores().then(setNaoGanhadores);
+    Backend.colaboladores.ganhadores().then(setGanhadores);
+    Backend.colaboladores.premioExtra().then(setGanhadoresE);
   }, []);
 
   async function salvar() {
@@ -27,13 +33,43 @@ export default function useColaboradores() {
     setColaborador(null);
   }
 
-  async function sortear(colabs: Colaborador[]) {
+  async function getResumoGanhou() {
+    const retorno = await Backend.colaboladores.resumoGanhou();
+    setResumo(retorno);
+  }
+
+  async function getResumoExtra() {
+    const retorno = await Backend.colaboladores.resumoExtra();
+    setResumoE(retorno);
+  }
+
+  async function getColaboradores() {
+    const retorno = await Backend.colaboladores.obter();
+    setColaboradores(retorno);
+    const winners = await Backend.colaboladores.ganhadores().then();
+    setGanhadores(winners);
+    const winnersE = await Backend.colaboladores.premioExtra().then();
+    setGanhadoresE(winnersE);
+  }
+
+  async function sortear(tipo: string, empresa: string) {
+    
     let id: number = 0,
       nome: string = "",
       min: number = 1,
-      max: number = colabs.length - 1,
-      random: number = Math.floor(Math.random() * (+max - +min) + +min),
+      max: number = 0,
+      random: number = 0,
       icont: number = 0;
+
+      const colabs = colaboradores.filter((item) => {
+        if (tipo == "0") {
+          return item.empresa.toLowerCase().startsWith(empresa.toLowerCase()) && item.observacao == "";
+        } 
+        return item.empresa.toLowerCase().startsWith(empresa.toLowerCase()) && item.premio == "";
+      });
+
+      max = colabs.length - 1,
+      random = Math.floor(Math.random() * (+max - +min) + +min),
 
     setGanhador("");
     colabs.map((colaborador: Colaborador) => {
@@ -46,11 +82,13 @@ export default function useColaboradores() {
     });
 
     if (icont > 0) {
-      await Backend.colaboladores.salvar({ id: id, observacao: "GANHOU" });
+      if (tipo == "0") {
+        await Backend.colaboladores.salvar({ id: id, observacao: "GANHOU" });
+      } else {
+        await Backend.colaboladores.salvar({ id: id, premio: "EXTRA" });
+      }
       const colaboradores = await Backend.colaboladores.obter();
       setColaboradores(colaboradores);
-      const nao_ganhadores = await Backend.colaboladores.naoGanhadores();
-      setNaoGanhadores(nao_ganhadores);
       setColaborador(null);
     }
   }
@@ -69,8 +107,6 @@ export default function useColaboradores() {
     }
     const colaboradores = await Backend.colaboladores.obter();
     setColaboradores(colaboradores);
-    const nao_ganhadores = await Backend.colaboladores.naoGanhadores();
-    setNaoGanhadores(nao_ganhadores);
     setColaborador(null);
     setSelecionados([]);
   }
@@ -101,8 +137,11 @@ export default function useColaboradores() {
   return {
     colaboradores,
     colaborador,
-    nao_ganhadores,
+    ganhadores,
+    ganhadoresE,
     colabs,
+    resumo,
+    resumoE,
     setColabs,
     sizeColabs: () => {
       return colabs.length;
@@ -115,6 +154,7 @@ export default function useColaboradores() {
     sortear,
     importar,
     upload,
+    getColaboradores,
     getMensagem: () => {
       return mensagem;
     },
@@ -129,6 +169,8 @@ export default function useColaboradores() {
     newGanhador: () => {
       setGanhador("");
     },
+    getResumoGanhou,
+    getResumoExtra,
     criarColaborador: (colaborador: Partial<Colaborador> | null) =>
       setColaborador(colaborador),
     alterarColaborador: (colaborador: Partial<Colaborador> | null) =>
