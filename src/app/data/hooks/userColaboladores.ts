@@ -7,7 +7,7 @@ export default function useColaboradores() {
 
   const [mensagem, setMensagem] = useState<String>("");
   const [icont, setIcont] = useState<number>(0);
-  const [ganhador, setGanhador] = useState<string>("");
+  const [ganhador, setGanhador] = useState<Colaborador>(<Colaborador>{});
   const [colaboradores, setColaboradores] = useState<Colaborador[]>([]);
   const [ganhadores, setGanhadores] = useState<Colaborador[]>([]);
   const [ganhadoresE, setGanhadoresE] = useState<Colaborador[]>([]);
@@ -71,12 +71,13 @@ export default function useColaboradores() {
       max = colabs.length - 1,
       random = Math.floor(Math.random() * (+max - +min) + +min),
 
-    setGanhador("");
+    setGanhador(<Colaborador>{});
     colabs.map((colaborador: Colaborador) => {
       if (icont == random) {
         nome = colaborador.nome;
         id = colaborador.id;
-        setGanhador(nome);
+        console.log(colaborador)
+        setGanhador(colaborador);
       }
       icont += 1;
     });
@@ -167,7 +168,7 @@ export default function useColaboradores() {
       return ganhador;
     },
     newGanhador: () => {
-      setGanhador("");
+      setGanhador(<Colaborador>{});
     },
     getResumoGanhou,
     getResumoExtra,

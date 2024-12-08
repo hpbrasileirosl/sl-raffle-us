@@ -1,10 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
+import { Colaborador } from "@/core/model/Colaborador";
 
 interface RaffleContextData {
-  winner: string;
+  winner:  Colaborador | null;
   isLoading: boolean;
   onChangeLoading: (value: boolean) => void;
-  onChangeWinner: (winner: string) => void;
+  onChangeWinner: (winner: Colaborador) => void;
 }
 
 const EVENTS = {
@@ -19,7 +20,7 @@ export const RaffleContext = createContext<RaffleContextData>(
 export const RaffleProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [winner, setWinner] = useState("");
+  const [winner, setWinner] = useState<Colaborador | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const channel = new BroadcastChannel("raffle");
@@ -29,7 +30,7 @@ export const RaffleProvider: React.FC<{ children: React.ReactNode }> = ({
       const { data } = event;
       switch (data.type) {
         case EVENTS.UPDATE_WINNER:
-          setWinner(data.value);
+          setWinner(data);
           break;
         case EVENTS.UPDATE_LOADING:
           setIsLoading(data.value);
@@ -50,7 +51,7 @@ export const RaffleProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   }, []);
 
-  const onChangeWinner = (newValue: string) => {
+  const onChangeWinner = (newValue: Colaborador) => {
     setWinner(newValue);
     channel.postMessage({ type: EVENTS.UPDATE_WINNER, value: newValue });
   };

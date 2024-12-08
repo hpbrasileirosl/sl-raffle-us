@@ -8,6 +8,25 @@ import RaffleLoading from "@/app/components/RaffleLoading";
 export default function Page() {
   const { winner, isLoading } = useContext(RaffleContext);
 
+  const trataEmpresa = (empresa: string) => {
+    if (empresa == "SLL") {
+        return "SL - Londrina"
+    }
+    if (empresa === "SLM") {
+        return "SL - Mauá"
+    }
+    if (empresa === "JD") {
+        return "SL - Jundiaí"
+    }
+    if (empresa === "SP") {
+      return "Sementes Paraná"
+  }
+  if (empresa === "ND") {
+        return "SL - Nordeste"
+    }
+    return ""
+  }
+
   return (
     <div className="min-h-screen w-full relative">
       <Image
@@ -23,7 +42,13 @@ export default function Page() {
         ) : (
           winner && (
             <div className="text-center">
-              <span className="text-5xl font-black text-black">{winner}</span>
+        
+              {/*@ts-ignore*/}
+              <span className="text-5xl font-black text-black">{winner.value.nome}</span><br/>
+              {/*@ts-ignore*/}
+              <span className="text-sm text-zinc-800">{winner.value.funcao}</span><br/>
+              {/*@ts-ignore*/}
+              <span className="text-sm text-zinc-800">{trataEmpresa(winner.value.empresa)}</span>
             </div>
           )
         )}

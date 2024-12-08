@@ -32,13 +32,18 @@ export default class RepositorioColaborador {
   }
 
   static async todosColaboradores(): Promise<Colaborador[]> {
-    return await this.db.colaborador.findMany();
+    return await this.db.colaborador.findMany({
+      where: {
+        supervisor: 0,
+      },
+    });
   }
 
   static async todosNaoGanhadores(): Promise<Colaborador[]> {
     return await this.db.colaborador.findMany({
       where: {
         observacao: "",
+        supervisor: 0,
       },
     });
   }

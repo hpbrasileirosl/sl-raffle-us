@@ -110,8 +110,9 @@ export default function Page() {
               <div className="flex items-center justify-center">
                 <div className="flex bg-zinc-900 items-center gap-5 p-4 rounded-md cursor-pointer">
                   <div className="flex flex-col">
-                    <span className="text-xl font-black">{ganhador()}</span>
-                    <span className="text-sm text-zinc-400"></span>
+                    <span className="text-xl font-black">{ganhador().nome}</span>
+                    <span className="text-sm text-zinc-400">{ganhador().funcao}</span>
+                    <span className="text-sm text-zinc-400">{ganhador().empresa}</span>
                   </div>
                 </div>
               </div>
