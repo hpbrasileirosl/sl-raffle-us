@@ -10,13 +10,16 @@ import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 
 export default function Page() {
+
+  const WITHOUT_SUP = 1
+
   const raffle = useContext(RaffleContext);
 
   const [tipo, setTipo] = useState("0");
   const [empresa, setEmpresa] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { colaboradores, resumo, sortear, ganhador, newGanhador } = useColaboladores();
+  const { colaboradores, sortear, ganhador, newGanhador } = useColaboladores();
 
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -32,7 +35,7 @@ export default function Page() {
     raffle.onChangeLoading(true);
     newGanhador();
     await delay(3000);
-    sortear(tipo, empresa);
+    sortear(tipo, empresa, WITHOUT_SUP);
     setLoading(false);
     raffle.onChangeLoading(false);
   };
@@ -51,9 +54,28 @@ export default function Page() {
     { value: "JD",  label: "Jundiai" },
   ];
 
+  const trataEmpresa = (empresa: string) => {
+    if (empresa == "SLL") {
+        return "Londrina"
+    }
+    if (empresa === "SLM") {
+        return "Mauá"
+    }
+    if (empresa === "JD") {
+        return "São Paulo"
+    }
+    if (empresa === "ND") {
+        return "Nordeste"
+    }
+    if (empresa === "SP") {
+        return "Sementes Paraná"
+    }
+    return ""
+  }
+
   useEffect(() => {
     raffle.onChangeWinner(ganhador());
-  }, [ganhador()]);
+  }, [ganhador, raffle]);
 
   return (
     <Pagina className="flex flex-col gap-10">
@@ -99,7 +121,7 @@ export default function Page() {
                 >
                   <span>Sortear</span>
                 </button>
-                <div className="text-sm ps-4"><span>Faltam {colabs.length}</span></div>
+                <div className="text-sm ps-2"><span>Faltam {colabs.length}</span></div>
               </div>
             )}
           </div>
@@ -112,7 +134,7 @@ export default function Page() {
                   <div className="flex flex-col">
                     <span className="text-xl font-black">{ganhador().nome}</span>
                     <span className="text-sm text-zinc-400">{ganhador().funcao}</span>
-                    <span className="text-sm text-zinc-400">{ganhador().empresa}</span>
+                    <span className="text-sm text-zinc-400">{trataEmpresa(ganhador().empresa)}</span>
                   </div>
                 </div>
               </div>

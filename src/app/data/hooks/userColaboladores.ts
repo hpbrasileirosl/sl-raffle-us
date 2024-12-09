@@ -52,7 +52,7 @@ export default function useColaboradores() {
     setGanhadoresE(winnersE);
   }
 
-  async function sortear(tipo: string, empresa: string) {
+  async function sortear(tipo: string, empresa: string, supervisor: number) {
     
     let id: number = 0,
       nome: string = "",
@@ -62,10 +62,17 @@ export default function useColaboradores() {
       icont: number = 0;
 
       const colabs = colaboradores.filter((item) => {
-        if (tipo == "0") {
-          return item.empresa.toLowerCase().startsWith(empresa.toLowerCase()) && item.observacao == "";
-        } 
-        return item.empresa.toLowerCase().startsWith(empresa.toLowerCase()) && item.premio == "";
+        if (supervisor == 0) {
+          if (tipo == "0") {
+            return item.empresa.toLowerCase().startsWith(empresa.toLowerCase()) && item.observacao == "" && item.supervisor == 0;
+          } 
+          return item.empresa.toLowerCase().startsWith(empresa.toLowerCase()) && item.premio == "" && item.supervisor == 0;
+        } else {
+          if (tipo == "0") {
+            return item.empresa.toLowerCase().startsWith(empresa.toLowerCase()) && item.observacao == "";
+          } 
+          return item.empresa.toLowerCase().startsWith(empresa.toLowerCase()) && item.premio == "";
+        }
       });
 
       max = colabs.length - 1,
