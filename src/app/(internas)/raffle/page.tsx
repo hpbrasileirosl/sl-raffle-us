@@ -20,8 +20,8 @@ export default function Page() {
     }
     if (empresa === "SP") {
       return "Sementes Paraná"
-  }
-  if (empresa === "ND") {
+    }
+    if (empresa === "ND") {
         return "SL - Nordeste"
     }
     return ""
